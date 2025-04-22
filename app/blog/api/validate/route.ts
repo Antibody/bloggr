@@ -1,4 +1,4 @@
-import { NextResponse, NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createSupabaseServerClient } from "../../../../lib/supabase/server"; // This is a helper for DB handling
 import { Pool } from "pg"; // For direct DB access for CREATE TABLE
@@ -6,7 +6,7 @@ import { Pool } from "pg"; // For direct DB access for CREATE TABLE
 // Helper delay function (ms in milliseconds) - Consider removing if not strictly needed
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   
 
   const cookieStore = await cookies(); // Await the cookie store

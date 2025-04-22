@@ -1,44 +1,19 @@
 "use client";
 
-import React, { useEffect, useState, FormEvent } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import Script from "next/script";
 import "react-toastify/dist/ReactToastify.css";
-import gsap from "gsap";
 
-// LoadingDots component remains unchanged.
-const LoadingDots = () => (
-  <span className="ml-2 inline-block">
-    <span className="dot" style={{ fontSize: "inherit" }}>.</span>
-    <span className="dot" style={{ fontSize: "inherit" }}>.</span>
-    <span className="dot" style={{ fontSize: "inherit" }}>.</span>
-    <style jsx>{`
-      .dot {
-        animation: dotWave 1.4s infinite;
-        display: inline-block;
-        font-weight: bold;
-        min-width: 0.5em;
-      }
-      .dot:nth-child(2) {
-        animation-delay: 0.2s;
-      }
-      .dot:nth-child(3) {
-        animation-delay: 0.4s;
-      }
-      @keyframes dotWave {
-        0%, 60%, 100% { opacity: 0.2; }
-        30% { opacity: 1; }
-      }
-    `}</style>
-  </span>
-);
+
+
 
 export default function SignupPage() {
   // Existing state variables.
   const [isDark, setIsDark] = useState(true);
   
-  const [loading] = useState(false);
+  
   const [showBlogTooltip, setShowBlogTooltip] = useState(false);
 
   // Apply dark mode immediately via body class.
@@ -55,16 +30,7 @@ export default function SignupPage() {
     setIsDark((prev) => !prev);
   };
 
-  // GSAP animation to shake the SVG container.
-  const shakeSVG = () => {
-    const tl = gsap.timeline();
-    tl.to(".svgContainerElement", { duration: 0.05, x: -6 })
-      .to(".svgContainerElement", { duration: 0.05, x: 6 })
-      .to(".svgContainerElement", { duration: 0.05, x: -4 })
-      .to(".svgContainerElement", { duration: 0.05, x: 4 })
-      .to(".svgContainerElement", { duration: 0.05, x: 0 });
-  };
-
+  
   
 
   return (

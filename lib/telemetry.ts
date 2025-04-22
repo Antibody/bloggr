@@ -26,9 +26,9 @@ export async function sendTelemetryEvent(
 
   // Check if running in a local development environment based on domain
   const domain = payload.domain || "";
-/*   if (domain && (typeof domain === "string") && (domain.startsWith("localhost") || domain.startsWith("127.0.0.1"))) {
+  if (domain && (typeof domain === "string") && (domain.startsWith("localhost") || domain.startsWith("127.0.0.1"))) {
     return;
-  } */
+  }
 
   // Construct the data packet
   const telemetryData = {
