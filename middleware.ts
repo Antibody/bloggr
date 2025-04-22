@@ -51,7 +51,7 @@ export async function middleware(req: NextRequest) {
   // getSession() will automatically refresh the session cookie if needed
   await supabase.auth.getSession();
 
-  // --- Blog Admin Area Protection ---
+  // ### Blog Admin Area Protection ---
   const requestedPath = req.nextUrl.pathname;
 
   if (requestedPath.startsWith('/blog/admin')) {
