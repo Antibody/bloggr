@@ -1,0 +1,208 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  /* Apply gradient background by default */
+  background: -moz-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%),-moz-linear-gradient(top,  rgba(57,173,219,.25) 0%, rgba(42,60,87,.4) 100%), -moz-linear-gradient(-45deg,  #670d10 0%, #092756 100%);
+  background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -webkit-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -webkit-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
+  background: -o-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -o-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -o-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
+  background: -ms-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -ms-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -ms-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
+  background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), linear-gradient(to bottom,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), linear-gradient(135deg,  #670d10 0%,#092756 100%);
+   color: var(--foreground); /* Use CSS variable for color */
+   color: var(--foreground); /* Use CSS variable for color */
+   font-family: Arial, Helvetica, sans-serif;
+   transition: background 0.3s, color 0.3s; /* Add transition for smoother theme change */
+   background-attachment: fixed; /* Keep background fixed during scroll */
+ }
+
+ /* --- Theme Styles --- */
+ /* Light Mode (Default - when .dark-mode is NOT present) */
+ body:not(.dark-mode) {
+   --background: #ffffff; /* White background */
+   --foreground: #171717; /* Dark text */
+   background: #f0f4f8; /* Light background color instead of complex gradient */
+   color: var(--foreground);
+ }
+
+ /* Dark Mode Styles */
+ body.dark-mode {
+   --background: #0a0a0a; /* Dark background variable */
+   --foreground: #ededed; /* Light text variable */
+   /* Removed background override, will now inherit the default body gradient */
+   color: var(--foreground);
+ }
+
+ /* Ensure links adapt to theme */
+ body:not(.dark-mode) a {
+    color: #007bff; /* Standard blue link for light mode */
+ }
+ body.dark-mode a {
+    color: #60a5fa; /* Lighter blue link for dark mode */
+ }
+ body a:hover {
+    text-decoration: underline;
+ }
+ /* --- End Theme Styles --- */
+
+
+ /* Basic Blog Post Article Styling */
+ article {
+   /* Add some default styling for articles if needed */
+   /* Example: max-width: 800px; margin: 2rem auto; */
+ }
+
+ /* Apply heading styles within .prose class for both editor and posts */
+ .prose h1 { /* Style the main title if rendered inside prose */
+   font-size: 2.25rem; /* Example size */
+   margin-bottom: 1rem;
+   margin-top: 1.5rem; /* Add some top margin */
+   font-weight: 700; /* Slightly bolder */
+ }
+
+ .prose h2 {
+   font-size: 1.85rem; /* Increased size */
+   margin-top: 2.2em; /* Increased top margin */
+   margin-bottom: 0.85em; /* Increased bottom margin */
+   font-weight: 700; /* Bolder */
+   border-bottom: 1px solid #e2e8f0; /* Adjusted border color (light mode) */
+   padding-bottom: 0.3em;
+ }
+
+ .prose h3 {
+   font-size: 1.4rem; /* Increased size */
+   margin-top: 1.8em; /* Increased top margin */
+   margin-bottom: 0.6em; /* Increased bottom margin */
+   font-weight: 700; /* Bolder */
+ }
+
+ .prose p {
+   line-height: 1.7; /* Improve readability */
+   margin-bottom: 1.25em; /* Space between paragraphs */
+   text-align: justify; /* Justify text */
+ }
+
+ /* Apply list styles within .prose class for both editor and posts */
+ .prose ul,
+ .prose ol {
+   margin-bottom: 1.25em;
+   padding-left: 1.5em; /* Indent lists */
+   /* Explicitly add list markers */
+   list-style-position: outside; /* Ensure markers are outside the content flow */
+ }
+
+ .prose ul {
+   list-style-type: disc; /* Standard bullets for unordered lists */
+ }
+
+ .prose ol {
+   list-style-type: decimal; /* Standard numbers for ordered lists */
+ }
+
+ /* Keep general li styling */
+ article li {
+   margin-bottom: 0.5em;
+ }
+ /* Also apply li margin within prose */
+ .prose li {
+    margin-bottom: 0.5em;
+ }
+
+ article code { /* Style inline code */
+   background-color: rgba(128, 128, 128, 0.1);
+   padding: 0.1em 0.3em;
+   border-radius: 4px;
+   font-family: var(--font-mono), monospace; /* Use mono font */
+   font-size: 0.9em;
+ }
+
+ article pre { /* Style code blocks */
+   background-color: rgba(128, 128, 128, 0.1);
+   padding: 1em;
+   border-radius: 4px;
+   overflow-x: auto; /* Allow horizontal scrolling */
+   margin-bottom: 1.25em;
+ }
+
+ article pre code { /* Reset background for code inside pre */
+   background-color: transparent;
+   padding: 0;
+   border-radius: 0;
+   font-size: 0.9em;
+ }
+
+ article img { /* Basic image styling */
+    max-width: 100%; /* Ensure images don't overflow container */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Center images if needed */
+    margin: 1.5em auto; /* Add space around images */
+    border-radius: 4px; /* Optional rounded corners */
+ }
+
+ article blockquote {
+    border-left: 4px solid #ccc;
+    padding-left: 1em;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 1.25em;
+    font-style: italic;
+    color: #555;
+ }
+
+ html {
+    height: 100%; /* Ensure html takes full height */
+ }
+
+ body {
+    min-height: 100vh; /* Ensure body takes at least full viewport height */
+    /* The rest of the body styles remain */
+ }
+
+
+ /* Dark mode adjustments for elements within .prose */
+ body.dark-mode .prose blockquote {
+    border-left-color: #555; /* Adjust border color */
+    color: #aaa; /* Adjust text color */
+ }
+
+ body.dark-mode .prose code {
+    background-color: rgba(255, 255, 255, 0.1); /* Lighter background for code */
+ }
+
+ body.dark-mode .prose pre {
+    background-color: rgba(255, 255, 255, 0.1); /* Lighter background for code blocks */
+ }
+
+ body.dark-mode .prose hr {
+    border-top-color: #444; /* Darker horizontal rule */
+ }
+
+ /* Dark mode adjustments for headings */
+ body.dark-mode .prose h2 {
+    border-bottom-color: #4a5568; /* Darker border for dark mode */
+ }
+
+ /* Snippet text color adjustment */
+ .blog-snippet {
+    color: #555; /* Default color (light mode) */
+ }
+ body.dark-mode .blog-snippet {
+    color: #bbb; /* Lighter color for dark mode */
+ }
