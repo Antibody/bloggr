@@ -1,30 +1,34 @@
 # Self-Hosted Blogging Platform
 
-## Custom Next.js-based Blogging Application
+## Custom Next.js-based Blogging Engine
 
 Welcome to the Bloggr Application! This document explains what this application does, how it works, and how you can set it up and use it to run your own blog.
 
 ## Overview
 
-This application provides a complete blog-engine solution integrated within a larger Next.js project. It allows an administrator (you!) to create, edit, and manage blog posts through a secure admin interface. Visitors can then view these posts on the public-facing blog section of the website. Current repo is built such that blog is located in `app/blog` folder and your landing page is `app/page.tsx`. 
+This repo provides a complete blog-engine solution integrated within a Next.js project. It allows an administrator (you!) to create, edit, and manage blog posts through a secure admin interface. Visitors can then view these posts on the public-facing blog section (`your-site.com/blog`) of the website. Current repo is built such that blog is located in `app/blog` folder and your landing page is `app/page.tsx`. 
 
-The blog uses [Supabase](https://supabase.com/) as its backend database and for handling image uploads and user authentication (for the admin).
+The blog uses [Supabase](https://supabase.com/) as its backend database and for handling image uploads and user authentication (for the admin). So, you need a Supabase account to run this app.
 
 ## Setup TL;DR
 
 For those familiar with Next.js and Supabase, here's the quick setup guide:
 
-1.  **Supabase Project:** Create a Supabase project.
-2.  **Environment Variables (`.env.local`):** Add your Supabase Project URL and Anon Key:
+1.  **Supabase Project:** Create a Supabase account. then project. When creating a database, not its password. You would need it for `DATABASE_URL`
+2.  **Environment Variables (`.env`):** All of the ones listed below are required:
     ```plaintext
     NEXT_PUBLIC_SUPABASE_URL=YOUR_SUPABASE_PROJECT_URL #i.e https://YOUR_SUPABASE_URL_SUBDOMAIN.supabase.co
     NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
     SUPABASE_SERVICE_ROLE_KEY=YOUR_SUPABASE_SERVICE_ROLE_KEY
     DATABASE_URL=postgresql://postgres.[YOUR_SUPABASE_URL_SUBDOMAIN]:[YOUR-DATABASE-PASSWORD]@[YOUR-DEPLOYMENT-ZONE].pooler.supabase.com:6543/postgres
     ADMIN_ALLOWED_EMAIL=YOUR_EMAIL_FROM_SUPABASE
+    ALLOW_TELEMETRY=TRUE # set FALSE to opt out from sending me telemetry, discussed below
     TELEMETRY_SERVER_URL=https://telemetry-vercel.vercel.app/api/telemetry
-    ALLOW_TELEMETRY=TRUE
+    VERCEL_DEPLOY_HOOK_URL= #optional
+    
     ```
+    Please note that for production it is betted to host your env variables with your host
+
 3.  **Admin User:** In Supabase Auth > Users, add an admin user with an email and password. Ensure the Email provider is enabled. Disable "Confirm email" for local dev if desired. Add this email to your environment variables as:
 ```plaintext
     ADMIN_ALLOWED_EMAI=your-admin-email@example.com
