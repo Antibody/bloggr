@@ -379,7 +379,7 @@ export default function SignupPage() {
   {/* *** END NEW CODE SNIPPET *** */}
 </Link>
             <a
-              href="/blog/build-your-own-selfhosted-blog-with-nextjs-supabase"
+              href="https://bloggr.dev/blog/build-your-own-selfhosted-blog-with-nextjs-supabase"
               target="_blank"
               /* rel="noopener noreferrer" */
               style={{
