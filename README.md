@@ -6,7 +6,7 @@ Welcome to the Bloggr Application! This document explains what this application 
 
 ## Overview
 
-This application provides a complete blogging solution integrated within a larger Next.js project. It allows an administrator (you!) to create, edit, and manage blog posts through a secure admin interface. Visitors can then view these posts on the public-facing blog section of the website. Current repo is built such that blog is located in `app/blog` folder and your landing page is `app/page.tsx`. 
+This application provides a complete blog-engine solution integrated within a larger Next.js project. It allows an administrator (you!) to create, edit, and manage blog posts through a secure admin interface. Visitors can then view these posts on the public-facing blog section of the website. Current repo is built such that blog is located in `app/blog` folder and your landing page is `app/page.tsx`. 
 
 The blog uses [Supabase](https://supabase.com/) as its backend database and for handling image uploads and user authentication (for the admin).
 
