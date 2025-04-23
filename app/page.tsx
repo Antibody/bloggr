@@ -230,7 +230,7 @@ export default function SignupPage() {
     <Link
   href="https://github.com/antibody/bloggr"
   target="_blank"
-  rel="noopener noreferrer"
+  rel="noopener" 
   style={{
     display: "inline-flex",          // ← align icon and text
     alignItems: "center",
@@ -304,7 +304,7 @@ export default function SignupPage() {
     <Link
   href="https://github.com/antibody/bloggr"
   target="_blank"
-  /* rel="noopener noreferrer" */
+   rel="noopener" 
   style={{
     display: "inline-flex",          // ← align icon and text
     alignItems: "center",
@@ -339,7 +339,7 @@ export default function SignupPage() {
 <Link
   href="https://github.com/antibody/bloggr"
   target="_blank"
-  /* rel="noopener noreferrer" */
+   rel="noopener" 
   style={{
     display: "inline-flex",          // ← align icon and text
     alignItems: "center",
@@ -381,7 +381,7 @@ export default function SignupPage() {
             <a
               href="https://bloggr.dev/blog/build-your-own-selfhosted-blog-with-nextjs-supabase"
               target="_blank"
-              /* rel="noopener noreferrer" */
+               rel="noopener" 
               style={{
                 padding: "0.75rem 1.5rem",
                 backgroundColor: "#217093",
@@ -533,7 +533,7 @@ export default function SignupPage() {
       <a
         href="https://github.com/Antibody/bloggr"
         target="_blank"
-        /* rel="noopener noreferrer" */
+        rel="noopener" 
         className="github-link"
       >
         <svg
@@ -552,7 +552,7 @@ export default function SignupPage() {
       <a
         href="https://github.com/Antibody/bloggr"
         target="_blank"
-        /* rel="noopener noreferrer" */
+         rel="noopener" 
         className="github-link"
       >
         <svg
