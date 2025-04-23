@@ -19,7 +19,11 @@ For those familiar with Next.js and Supabase, here's the quick setup guide:
     ```plaintext
     NEXT_PUBLIC_SUPABASE_URL=YOUR_SUPABASE_PROJECT_URL #i.e https://YOUR_SUPABASE_URL_SUBDOMAIN.supabase.co
     NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
-    DATABASE_URL=postgresql://postgres.[YOUR_SUPABASE_URL_SUBDOMAIN]:[YOUR-DATABASE-PASSWORD]@aws-0-eu-west-1.pooler.supabase.com:6543/postgres
+    SUPABASE_SERVICE_ROLE_KEY=YOUR_SUPABASE_SERVICE_ROLE_KEY
+    DATABASE_URL=postgresql://postgres.[YOUR_SUPABASE_URL_SUBDOMAIN]:[YOUR-DATABASE-PASSWORD]@[YOUR-DEPLOYMENT-ZONE].pooler.supabase.com:6543/postgres
+    ADMIN_ALLOWED_EMAIL=YOUR_EMAIL_FROM_SUPABASE
+    TELEMETRY_SERVER_URL=https://telemetry-vercel.vercel.app/api/telemetry
+    ALLOW_TELEMETRY=TRUE
     ```
 3.  **Admin User:** In Supabase Auth > Users, add an admin user with an email and password. Ensure the Email provider is enabled. Disable "Confirm email" for local dev if desired. Add this email to your environment variables as:
 ```plaintext
@@ -27,8 +31,9 @@ For those familiar with Next.js and Supabase, here's the quick setup guide:
 ```
 4. **Database Table:** The `blog_posts` table  will be created automatically on first admin login via `/blog/api/validate`. Ensure RLS is enabled and policies allow public read (`SELECT`) and authenticated write (`INSERT`, `UPDATE`, `DELETE`).
 5. **Storage Bucket for Images:** A a **public** Supabase Storage bucket named `blog-images` will be created on the first login.
-6.  **Install & Run:** `npm install` then `npm run dev`.
-7.  **Login:** Access `/blog/login` with the admin credentials created in step 2.
+6. **Clone repo:** `git clone https://github.com/Antibody/bloggr.git` then `cd bloggr`
+7.  **Install deps & Run:** `npm install` then `npm run dev`.
+8.  **Login:** Access blog admin page at `/blog/login` with the admin credentials created in step 2.
 
 ## Features
 
@@ -135,9 +140,11 @@ Supabase provides the backend database, file storage, and authentication.
     ```plaintext
     NEXT_PUBLIC_SUPABASE_URL=YOUR_SUPABASE_PROJECT_URL
     NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
-
-    # Optional: Add if you want the Vercel rebuild trigger to work
-    # VERCEL_DEPLOY_HOOK_URL=YOUR_VERCEL_DEPLOY_HOOK_URL
+    SUPABASE_SERVICE_ROLE_KEY=YOUR_SUPABASE_SERVICE_ROLE_KEY
+    ADMIN_ALLOWED_EMAIL=YOUR_EMAIL_FROM_SUPABASE
+    DATABASE_URL=postgresql://postgres.[YOUR_SUPABASE_URL_SUBDOMAIN]:[YOUR-DATABASE-PASSWORD]@[YOUR-DEPLOYMENT-ZONE].pooler.supabase.com:6543/postgres
+    TELEMETRY_SERVER_URL=telemetry-vercel.vercel.app/api/telemetry
+    ALLOW_TELEMETRY=TRUE
     ```
 
     Replace `YOUR_SUPABASE_PROJECT_URL` and `YOUR_SUPABASE_ANON_KEY` with the actual values from your Supabase project settings.
@@ -182,8 +189,8 @@ To make your blog accessible to everyone online, you need to deploy it.
 
 1.  **Choose a Host:** Select a hosting provider that supports Next.js. [Vercel](https://vercel.com/) is highly recommended as it's made by the creators of Next.js and integrates well (like the optional rebuild trigger). Other options include Netlify, AWS Amplify, etc.
 2.  **Connect Repository:** Link your code repository (e.g., GitHub, GitLab) to your chosen hosting provider.
-3.  **Configure Build Settings:** The host usually detects Next.js automatically. Ensure the build command is `npm run build`.
-4.  **Environment Variables:** Add your `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` to the hosting provider's environment variable settings. **Important:** If you created separate Supabase projects for development and production, use the **production** keys here. Also add the `VERCEL_DEPLOY_HOOK_URL` if you want the rebuild trigger feature.
+3.  **Configure Build Settings:** The host usually detects Next.js automatically. 
+4.  **Environment Variables:** Add your `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `DATABASE_URL` etc... (see abpve) to the hosting provider's environment variable settings. **Important:** If you created separate Supabase projects for development and production, use the **production** keys here. Also add the `VERCEL_DEPLOY_HOOK_URL` if you want the rebuild trigger feature.
 5.  **Deploy:** Trigger the deployment process through the hosting provider's interface.
 6.  **Access:** Your blog will be live at the URL provided by your host (or your custom domain if you set one up).
 
