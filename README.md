@@ -1,5 +1,7 @@
 # Self-Hosted Blogging Platform
 
+![image](https://github.com/user-attachments/assets/44904e10-3743-4e15-9cd3-9a2300a777bc)
+
 ## Custom Next.js-based Blogging Engine
 
 Welcome to the Bloggr Application! This document explains what this application does, how it works, and how you can set it up and use it to run your own blog.
