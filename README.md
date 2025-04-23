@@ -91,8 +91,11 @@ Follow these steps to get the blog running on your own computer or deploy it onl
 
 Navigate to the main project directory (the one containing `package.json`) in your terminal and run:
 
-```bash
+```
+git clone https://github.com/Antibody/bloggr.git
+cd bloggr
 npm install
+npm run dev
 ```
 
 This command downloads and installs all the necessary software packages the project relies on.
