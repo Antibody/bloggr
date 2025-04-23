@@ -87,11 +87,10 @@ Follow these steps to get the blog running on your own computer or deploy it onl
 2.  **Code:** You need the codebase for this project. If you haven't already, clone or download it.
 3.  **Terminal/Command Prompt:** You'll need to run commands in a terminal window.
 
-### Step 1: Install Dependencies
+### Step 1: Clone Repo & Install Dependencies
 
-Navigate to the main project directory (the one containing `package.json`) in your terminal and run:
 
-```
+```bash
 git clone https://github.com/Antibody/bloggr.git
 cd bloggr
 npm install
