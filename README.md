@@ -41,7 +41,7 @@ For those familiar with Next.js and Supabase, here's the quick setup guide:
 5. **Storage Bucket for Images:** A a **public** Supabase Storage bucket named `blog-images` will be created on the first login.
 6. **Clone repo:** `git clone https://github.com/Antibody/bloggr.git` then `cd bloggr`
 7.  **Install deps & Run:** `npm install` then `npm run dev`.
-8.  **Login:** Access blog admin page at `/blog/login` with the admin credentials created in step 2.
+8.  **Login:** Access blog admin page at `/blog/login` with the admin credentials created in step 3.
 
 ## Features
 
