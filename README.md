@@ -18,7 +18,7 @@ The blog uses [Supabase](https://supabase.com/) as its backend database and for 
 
 For those familiar with Next.js and Supabase, here's the quick setup guide:
 
-1.  **Supabase Project:** Create a Supabase account. then project. When creating a database, not its password. You would need it for `DATABASE_URL`
+1.  **Supabase Project:** Create a Supabase account. then project. When creating a database, note its password. You would need it for `DATABASE_URL`
 2.  **Environment Variables (`.env`):** All of the ones listed below are required:
     ```plaintext
     NEXT_PUBLIC_SUPABASE_URL=YOUR_SUPABASE_PROJECT_URL #i.e https://YOUR_SUPABASE_URL_SUBDOMAIN.supabase.co
