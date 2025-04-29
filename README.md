@@ -2,7 +2,7 @@
 
 ![image](https://github.com/user-attachments/assets/44904e10-3743-4e15-9cd3-9a2300a777bc)
 
-🔗 Node.js Version: [Bloggr's Blog](https://github.com/Antibody/bloggr-node-js) 
+🔗 Node.js Version: [Node.js Version](https://github.com/Antibody/bloggr-node-js) 
 💻 Demo:  [Bloggr's Blog](https://bloggr.dev/blog) 
 
 ## Custom Next.js-based Blogging Engine
