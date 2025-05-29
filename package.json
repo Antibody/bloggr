@@ -9,7 +9,10 @@
     "lint": "next lint"
   },
 
-  "author": "Maxim Bespalov (https://github.com/Antibody/bloggr)", 
+  "author": {
+  "name": "Maxim Bespalov",
+  "url": "https://github.com/Antibody/bloggr"
+           }, 
   "license": "MIT", 
   "keywords": ["blog engine", "CMS", "blog platform", "ejs"],
   "description": "Bloggr: A modern, full-stack Next.js-based blogging platform",
