@@ -29,6 +29,7 @@ import ListItem from "@tiptap/extension-list-item";
 import TextAlign from "@tiptap/extension-text-align";
 import Code from "@tiptap/extension-code";
 import CodeBlock from "@tiptap/extension-code-block";
+import Link from "@tiptap/extension-link";
 import {
   BsTypeBold,
   BsTypeItalic,
@@ -47,6 +48,7 @@ import {
   BsCalendar,
   BsTags,
   BsCardText,
+  BsLink45Deg,
 } from "react-icons/bs";
 
 // --- Types ---
@@ -135,6 +137,22 @@ const MenuBar = ({
         : "bg-gray-800 text-gray-400 hover:bg-gray-700 hover:text-gray-200"
     } disabled:opacity-40 disabled:cursor-not-allowed`;
 
+  const setLink = (): void => {
+    const previousUrl = editor.getAttributes("link").href;
+    const url = window.prompt("Enter URL", previousUrl || "https://");
+    if (url === null) return;
+    if (url === "") {
+      editor.chain().focus().extendMarkRange("link").unsetLink().run();
+      return;
+    }
+    editor
+      .chain()
+      .focus()
+      .extendMarkRange("link")
+      .setLink({ href: url })
+      .run();
+  };
+
   return (
     <div className="flex flex-wrap items-center gap-1">
       <button
@@ -164,6 +182,13 @@ const MenuBar = ({
         title="Underline"
       >
         <BsTypeUnderline />
+      </button>
+      <button
+        onClick={setLink}
+        className={buttonClass(editor.isActive("link"))}
+        title="Link"
+      >
+        <BsLink45Deg />
       </button>
       <button
         onClick={() => setParagraphCommand(editor)}
@@ -275,7 +300,7 @@ const MenuBar = ({
   );
 };
 
-// ## Main Admin Page Component ---
+// --- Main Admin Page Component ---
 const BlogAdminPage = (): ReactElement => {
   // State
   const [posts, setPosts] = useState<PostListItem[]>([]);
@@ -327,6 +352,13 @@ const BlogAdminPage = (): ReactElement => {
       Bold,
       Italic,
       Underline,
+      Link.configure({
+        openOnClick: false,
+        HTMLAttributes: {
+          rel: "noopener noreferrer",
+          target: "_blank",
+        },
+      }),
       Image,
       History,
       Dropcursor,
