@@ -1,41 +1,41 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-import typescriptParser from "@typescript-eslint/parser"; // Import the parser
-import typescriptPlugin from "@typescript-eslint/eslint-plugin"; // Import the plugin
-
-const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
-  // Add custom rules configuration
+import nextVitals from "eslint-config-next/core-web-vitals";
+import nextTypescript from "eslint-config-next/typescript";
+const config = [
   {
-    files: ["**/*.ts", "**/*.tsx"], // Apply only to TypeScript files
+    files: ["scripts/**/*.mjs"],
     languageOptions: {
-      parser: typescriptParser, // Specify the TypeScript parser
+      globals: {
+        process: "readonly",
+        console: "readonly",
+        Buffer: "readonly",
+        URL: "readonly",
+      },
     },
-    plugins: {
-      "@typescript-eslint": typescriptPlugin, // Register the TypeScript plugin
-    },
+    rules: { "no-undef": "error" },
+  },
+  ...nextVitals,
+  ...nextTypescript,
+  {
+    ignores: [
+      ".next/**",
+      "node_modules/**",
+      "playwright-report/**",
+      "test-results/**",
+    ],
+  },
+  {
+    files: ["**/*.ts", "**/*.tsx"],
     rules: {
-      // Allow unused variables/args if they start with an underscore
       "@typescript-eslint/no-unused-vars": [
-        "warn", // or "error"
+        "warn",
         {
           argsIgnorePattern: "^_",
           varsIgnorePattern: "^_",
           caughtErrorsIgnorePattern: "^_",
         },
       ],
-      // Add any other custom rule overrides here
     },
   },
 ];
 
-export default eslintConfig;
+export default config;

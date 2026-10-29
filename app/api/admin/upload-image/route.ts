@@ -1,72 +1,74 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseServerClient } from '@/lib/supabaseClient'; // Import Supabase client
-// Removed fs and path imports
-import { v4 as uuidv4 } from 'uuid'; // For generating unique filenames
-
-const BUCKET_NAME = 'blog-images'; // Define bucket name, also used in "validate" endpoint
-
+import { NextRequest, NextResponse } from "next/server";
+import sharp from "sharp";
+import { boundedBody } from "@/lib/access";
+import { randomUUID } from "node:crypto";
+import { authorizeWorkspace, apiError } from "@/lib/admin";
+import { mediaText } from "@/lib/media";
+import { HttpError } from "@/lib/validation";
 export async function POST(request: NextRequest) {
- 
-
   try {
-    const formData = await request.formData();
-    const file = formData.get('image') as File | null;
-
-    if (!file) {
-      return NextResponse.json({ error: "No image file provided" }, { status: 400 });
-    }
-
-    // Validate file type 
-    if (!file.type.startsWith('image/')) {
-       return NextResponse.json({ error: "Invalid file type, please upload an image." }, { status: 400 });
-    }
-
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
-    // Generate a unique filename
-    const fileExtension = file.name.split('.').pop(); 
-    const uniqueFilename = `${uuidv4()}.${fileExtension}`;
-
-    // Get Supabase client
-    const supabase = getSupabaseServerClient();
-
-    // Upload file to Supabase Storage
-    // Prefix uploadData with _ as it's not used, only uploadError is checked
-    const { data: _uploadData, error: uploadError } = await supabase.storage
-      .from(BUCKET_NAME)
-      .upload(uniqueFilename, buffer, {
-        contentType: file.type, // Pass content type
-        cacheControl: '3600', // Set cache control
-        upsert: false, // Don't overwrite existing files 
+    const { db, actor } = await authorizeWorkspace(request);
+    if (Number(request.headers.get("content-length")) > 5500000)
+      throw new HttpError(413, "Choose an image smaller than 5 MB.");
+    const body = await boundedBody(request, 5500000);
+    const form = await new Request(request.url, {
+      method: "POST",
+      headers: { "content-type": request.headers.get("content-type") || "" },
+      body: Buffer.from(body),
+    }).formData();
+    const alt = mediaText(form.get("alt"), 300);
+    const caption = mediaText(form.get("caption"), 500);
+    const file = form.get("image");
+    if (!(file instanceof File) || file.size > 5242880 || file.size === 0)
+      throw new HttpError(400, "Choose an image between 1 byte and 5 MB.");
+    const bytes = Buffer.from(await file.arrayBuffer());
+    let output: Buffer;
+    try {
+      const image = sharp(bytes, {
+        limitInputPixels: 25000000,
+        animated: false,
       });
-
-    if (uploadError) {
-      console.error('Supabase storage upload error:', uploadError);
-      return NextResponse.json({ error: "Failed to upload image to storage", details: uploadError.message }, { status: 500 });
+      const meta = await image.metadata();
+      if (!["jpeg", "png", "webp", "gif"].includes(meta.format || "")) throw 0;
+      output = await image
+        .rotate()
+        .resize({ width: 1800, withoutEnlargement: true })
+        .webp({ quality: 82 })
+        .toBuffer();
+    } catch {
+      throw new HttpError(
+        400,
+        "Choose a valid JPEG, PNG, WebP, or GIF image up to 25 megapixels.",
+      );
     }
-
-    // Get the public URL for the uploaded file
-    const { data: urlData } = supabase.storage
-      .from(BUCKET_NAME)
-      .getPublicUrl(uniqueFilename);
-
-    if (!urlData || !urlData.publicUrl) {
-        console.error('Supabase storage getPublicUrl error: URL not found for', uniqueFilename);
-        // Attempt to delete the uploaded file if we can't get the URL? Or handle differently.
-        // For now, return an error.
-        return NextResponse.json({ error: "Image uploaded but failed to get public URL" }, { status: 500 });
+    const name = randomUUID() + ".webp";
+    const { error } = await db.storage
+      .from("blog-images")
+      .upload(name, output, { contentType: "image/webp", upsert: false });
+    if (error) throw error;
+    const dimensions = await sharp(output).metadata();
+    const { error: metadataError } = await db.from("blog_media").insert({
+      name,
+      alt,
+      caption,
+      width: dimensions.width,
+      height: dimensions.height,
+      byte_size: output.length,
+      created_by: actor.id,
+    });
+    if (metadataError) {
+      await db.storage.from("blog-images").remove([name]);
+      throw metadataError;
     }
-
-    const publicImageUrl = urlData.publicUrl;
-    console.log(`Image uploaded successfully to Supabase: ${publicImageUrl}`); 
-
-    return NextResponse.json({ success: true, imageUrl: publicImageUrl });
-
-  } catch (error) {
-    console.error('Image upload failed:', error);
-    // Check if the error is an object and has a message property
-    const errorMessage = error instanceof Error ? error.message : 'Internal Server Error';
-    return NextResponse.json({ error: "Image upload failed", details: errorMessage }, { status: 500 });
+    return NextResponse.json({
+      imageUrl: db.storage.from("blog-images").getPublicUrl(name).data
+        .publicUrl,
+      name,
+      alt,
+      caption,
+      success: true,
+    });
+  } catch (e) {
+    return apiError(e);
   }
 }

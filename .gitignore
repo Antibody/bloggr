@@ -1,0 +1,10 @@
+node_modules/
+.next/
+*.tsbuildinfo
+.env*.local
+playwright-report/
+test-results/
+coverage/
+
+.bloggr-example.json
+.bloggr-example.log

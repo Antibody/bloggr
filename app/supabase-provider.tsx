@@ -15,9 +15,15 @@ interface SupabaseContextType {
 // Initialize context with null or a default shape if preferred
 const SupabaseContext = createContext<SupabaseContextType | null>(null);
 
-export const SupabaseProvider = ({ children }: { children: React.ReactNode }) => {
+export const SupabaseProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   // Initialize state with the browser client instance
-  const [supabase] = useState<SupabaseClient>(() => createSupabaseBrowserClient());
+  const [supabase] = useState<SupabaseClient>(() =>
+    createSupabaseBrowserClient(),
+  );
   // Removed setSupabase state setter as it's unlikely needed for a stable client
 
   // Optional: Add effect for session changes if needed for reactivity
@@ -42,7 +48,8 @@ export const SupabaseProvider = ({ children }: { children: React.ReactNode }) =>
 
 export const useSupabaseClient = () => {
   const context = useContext(SupabaseContext);
-  if (context === null) { // Check against null initialization
+  if (context === null) {
+    // Check against null initialization
     throw new Error("useSupabaseClient must be used within a SupabaseProvider");
   }
   return context.supabase;
