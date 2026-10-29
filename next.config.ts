@@ -1,17 +1,34 @@
 import type { NextConfig } from "next";
-// Removed MDX import: import nextMdx from '@next/mdx';
-
-// Removed MDX configuration function:
-// const withMDX = nextMdx({ ... });
-
-const nextConfig: NextConfig = {
-  /* config options here */
-  pageExtensions: ['ts', 'tsx', 'js', 'jsx'], // Removed 'md' and 'mdx'
-  // Optional: Enable experimental features if needed, like serverActions
-  // experimental: {
-  //   serverActions: true,
-  // },
+const config: NextConfig = {
+  async headers() {
+    return [
+      {
+        source: "/blog/api/validate",
+        headers: [{ key: "Cache-Control", value: "private, no-store" }],
+      },
+      {
+        source: "/api/admin/:path*",
+        headers: [
+          { key: "Cache-Control", value: "private, no-store" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+        ],
+      },
+      {
+        source: "/blog/preview/:path*",
+        headers: [
+          { key: "Cache-Control", value: "private, no-store" },
+          { key: "X-Robots-Tag", value: "noindex" },
+        ],
+      },
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "X-Frame-Options", value: "DENY" },
+        ],
+      },
+    ];
+  },
 };
-
-// Export the config directly without MDX wrapper
-export default nextConfig;
+export default config;
