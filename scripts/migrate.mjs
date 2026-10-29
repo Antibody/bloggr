@@ -39,6 +39,9 @@ try {
       throw error;
     }
   }
+  // Schema cache reloads are asynchronous. Request one even on a no-op rerun;
+  // example setup separately waits for the REST API to expose the schema.
+  await db.query("NOTIFY pgrst, 'reload schema'");
   console.log("Migrations complete.");
 } catch {
   console.error(

@@ -45,3 +45,20 @@ Application authors were the primary Codex session and bounded public/editor/rol
 Approval covers the public local example. No hosted deployment or physical-device Safari/Android validation is claimed. Public images/profiles are intentional. Media deletion reference checks are not a distributed transaction with a simultaneous newly added reference; this ordinary concurrency limitation is documented in README.
 
 GitHub Actions is configured to run the same checks, install its browser explicitly, start an isolated backend, and clean up services. Remote CI results are separate from the local evidence recorded here. Full local logs and screenshots are retained at `/workspace/bloggr-implementation-evidence/` in the development workspace.
+
+
+## CI follow-up: REST schema readiness
+
+The pull-request workflow run `40932720731` failed during example profile creation with `PGRST205`, although the push workflow had passed. The readiness probe used HEAD; the installed PostgREST client normalizes an empty-body HTTP 404 into a successful 204. Setup could therefore write before the schema cache was ready.
+
+The repair requests a PostgREST schema reload after all migration commits, including no-op reruns. Setup now waits for successful GET responses containing arrays from all nine required relations and checks newly added columns. Requests have abort deadlines; permission failures stop immediately. Seed mutations are never retried by this readiness helper.
+
+Follow-up source digest: `037bbf97a31e9dc3e2744d602b3beb4c087b1028197d60a338a6cee0e9487cf4` (same digest method; base commit `66d1e66adf3ed7ae3f8be19634b1d9530100fb6a`). Local verification passed:
+
+- All 28 unit/database cases, including six new real-SDK readiness regressions: delayed profiles, empty-body 404, delayed columns, permanent failure, permission denial, and stalled-request cancellation.
+- Lint, type generation/checking, and a clean production build.
+- Repeated example setup against the real local Supabase stack.
+- A disposable PostgreSQL database and PostgREST container reproduced the old HEAD false-positive, rejected the empty schema, loaded all nine relations after fresh migrations, and observed the actual reload notification on a no-op migration rerun. The temporary database and container were removed afterward.
+- Independent read-only correctness review found no blockers. RPC metadata is not explicitly probed; the final schema's relations and columns are checked without issuing extra mutations.
+
+Local logs are retained as `/tmp/bloggr-schema-*.log`. GitHub checks will rerun on the pushed repair; this local record does not claim their outcome.

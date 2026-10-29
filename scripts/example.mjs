@@ -6,6 +6,7 @@ import { createClient } from "@supabase/supabase-js";
 import sharp from "sharp";
 import { fileURLToPath } from "node:url";
 import { setTimeout as pause } from "node:timers/promises";
+import { waitForExampleSchema } from "./example-schema.mjs";
 const cwd = new URL("../", import.meta.url);
 process.chdir(fileURLToPath(cwd));
 const cli = fileURLToPath(
@@ -137,13 +138,9 @@ try {
     await pause(250);
   }
 
-  for (let attempt = 0; attempt < 40; attempt++) {
-    const ready = await db.from("blog_media").select("name", { head: true });
-    if (!ready.error) break;
-    if (attempt === 39)
-      throw new Error("The local REST schema cache did not become ready.");
-    await pause(250);
-  }
+  stage = "REST schema readiness";
+  await waitForExampleSchema(db);
+  stage = "auth users";
   const { data: existing, error: usersError } = await db.auth.admin.listUsers({
     page: 1,
     perPage: 100,
